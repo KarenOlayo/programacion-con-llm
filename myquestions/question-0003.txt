@@ -1,0 +1,43 @@
+Alineación temporal de eventos mediante merge_asof en pandas
+
+Se dispone de dos DataFrames de pandas que contienen información temporal de un sistema de monitoreo:
+
+- Un DataFrame eventos, que contiene registros de eventos con una marca de tiempo.
+- Un DataFrame referencias, que contiene valores de referencia también indexados por tiempo.
+
+El objetivo es alinear cada evento con el valor de referencia más reciente disponible en el tiempo (sin usar información futura).
+
+Implemente la siguiente función:
+
+```
+def alinear_eventos_con_referencias(
+    eventos: pd.DataFrame,
+    referencias: pd.DataFrame,
+    columna_tiempo: str,
+    columna_valor: str
+) -> pd.DataFrame:
+```
+
+La función debe realizar lo siguiente:
+
+1. Ordenar ambos DataFrames por la columna columna_tiempo.
+
+2. Realizar una unión utilizando pd.merge_asof para asociar a cada evento el valor más reciente disponible en referencias, sin utilizar valores futuros.
+
+3. El DataFrame resultante debe contener:
+
+- Todas las columnas originales de eventos.
+- Una nueva columna con el nombre valor_referencia, correspondiente a la columna columna_valor de referencias.
+
+4. Si un evento no tiene una referencia previa disponible, el valor debe ser NaN.
+
+5. No modificar los DataFrames originales.
+
+6. Devolver el DataFrame resultante.
+
+Especificaciones:
+
+- No usar merge estándar.
+- No usar bucles explícitos (for, while).
+- Usar exclusivamente pd.merge_asof para la alineación.
+- El resultado debe ser completamente determinista dado el input.
