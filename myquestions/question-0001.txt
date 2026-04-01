@@ -1,0 +1,52 @@
+Resumen estadístico por grupos con ventanas móviles y detección de cambios en pandas
+
+Se dispone de un DataFrame de pandas que contiene mediciones numéricas registradas a lo largo del tiempo, organizadas por grupos. Cada fila representa una observación con una marca de tiempo, un identificador de grupo y un valor numérico.
+
+El objetivo es calcular, para cada observación, estadísticas de ventana móvil dentro de su grupo, y detectar si el valor actual representa un cambio significativo respecto a la media móvil reciente.
+
+Implemente la siguiente función:
+
+```
+def analizar_series_por_grupo(
+    datos: pd.DataFrame,
+    columna_grupo: str,
+    columna_tiempo: str,
+    columna_valor: str,
+    ventana: int,
+    umbral_zscore: float
+) -> pd.DataFrame:
+```
+
+La función debe realizar lo siguiente:
+
+1. Ordenar el DataFrame por columna_grupo y columna_tiempo.
+
+2. Para cada grupo definido por columna_grupo, calcular usando operaciones vectorizadas de pandas:
+
+- La media móvil del columna_valor con ventana de tamaño ventana (rolling mean).
+- La desviación estándar móvil con la misma ventana (rolling std).
+
+3. Calcular el z-score puntual de cada observación respecto a su ventana móvil:
+
+z = (valor - media_movil) / (std_movil)
+
+4. Agregar al DataFrame resultante las siguientes columnas nuevas:
+
+- media_movil: la media móvil calculada.
+- std_movil: la desviación estándar móvil calculada.
+- zscore: el z-score calculado.
+- es_cambio: booleano, True si el valor absoluto del z-score supera umbral_zscore.
+
+5. Las filas donde la ventana móvil no tenga suficientes datos deben tener NaN en media_movil, std_movil y zscore, y False en es_cambio.
+
+6. No modificar el DataFrame original.
+
+7. Devolver el DataFrame resultante con todas las columnas originales más las cuatro nuevas columnas descritas. El índice del DataFrame resultante debe ser el mismo que el del DataFrame original.
+
+Especificaciones:
+
+- No usar bucles explícitos (for, while) sobre filas o grupos.
+- Usar exclusivamente operaciones de pandas (groupby, rolling, transform o similares).
+- La desviación estándar móvil debe calcularse usando el comportamiento por defecto de pandas (ddof=1).
+- No usar sklearn en ninguna parte.
+- El resultado debe ser completamente determinista dado el input.
