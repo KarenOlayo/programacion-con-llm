@@ -1,0 +1,35 @@
+Reducción de dimensionalidad por lotes usando IncrementalPCA
+
+Se dispone de un conjunto de datos representado como un DataFrame de pandas que contiene variables numéricas correspondientes a mediciones de un sistema de gran escala. Debido al tamaño potencial de los datos, se requiere aplicar una técnica de reducción de dimensionalidad que procese la información en bloques (batches).
+
+Implemente la siguiente función:
+
+```
+def reducir_dimensionalidad_incremental(
+    datos: pd.DataFrame,
+    n_componentes: int,
+    batch_size: int
+) -> np.ndarray:
+```
+
+La función debe realizar lo siguiente:
+
+1. Inicializar un modelo IncrementalPCA de sklearn con:
+
+- n_components = n_componentes
+- batch_size = batch_size
+
+2. Ajustar el modelo utilizando los datos en múltiples llamadas a partial_fit, procesando los datos en bloques consecutivos de tamaño batch_size.
+
+3. Una vez ajustado el modelo, transformar todo el conjunto de datos utilizando el modelo entrenado.
+
+4. Devolver un array de numpy con los datos transformados en el espacio reducido.
+
+Especificaciones:
+
+- No usar PCA estándar.
+- No usar fit directamente sobre todo el dataset.
+- El ajuste debe realizarse exclusivamente mediante partial_fit.
+- No modificar el DataFrame original.
+- No usar bucles explícitos sobre filas (pero sí está permitido iterar por batches).
+- El resultado debe ser completamente determinista dado el input.
