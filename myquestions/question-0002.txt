@@ -1,0 +1,46 @@
+Detección de anomalías mediante distancia de Mahalanobis en espacio PCA
+
+Se dispone de un conjunto de datos representado como un DataFrame de pandas, que contiene mediciones numéricas multivariadas de un sistema de sensores en un entorno de ingeniería avanzada. Debido a la correlación entre variables, se requiere identificar observaciones atípicas considerando la estructura conjunta de los datos.
+
+Para ello, se propone utilizar una proyección a un espacio de menor dimensión mediante PCA y posteriormente evaluar la distancia estadística de cada observación respecto a la distribución de los datos proyectados.
+
+Implemente la siguiente función:
+
+```
+def detectar_anomalias_mahalanobis(
+    datos: pd.DataFrame,
+    n_componentes: int,
+    umbral: float
+) -> tuple[np.ndarray, np.ndarray]:
+```
+
+Los argumentos de la función son:
+
+- datos: DataFrame que contiene únicamente variables numéricas.
+- n_componentes: Número de componentes principales a utilizar en PCA.
+- umbral: Valor umbral sobre la distancia de Mahalanobis para clasificar anomalías.
+
+La función debe realizar lo siguiente:
+
+1. Ajustar un modelo PCA de sklearn con n_components=n_componentes.
+
+2. Transformar los datos al espacio reducido de componentes principales.
+
+3. Calcular el vector de medias y la matriz de covarianza de los datos proyectados. La matriz de covarianza debe calcularse utilizando np.cov(X, rowvar=False).
+
+4. Calcular la distancia de Mahalanobis para cada observación respecto a la media del espacio proyectado, utilizando operaciones de numpy. Para la inversión de la matriz de covarianza, utilizar su inversa si es invertible, o en caso contrario la pseudo-inversa (np.linalg.pinv).
+
+5. Clasificar cada observación como: 1 si la distancia es mayor que el umbral (anomalía) o 0 en caso contrario
+
+6. La función debe devolver una tupla con:
+
+- Un array de numpy con las etiquetas de anomalía (0 o 1).
+- Un array de numpy con las distancias de Mahalanobis calculadas para cada observación.
+
+Especificaciones:
+
+- No usar funciones predefinidas de distancia de Mahalanobis de librerías externas.
+- El cálculo debe implementarse manualmente utilizando numpy.
+- No usar modelos de detección de anomalías como IsolationForest o LocalOutlierFactor.
+- No usar train_test_split.
+- El resultado debe ser completamente determinista dado el input.
