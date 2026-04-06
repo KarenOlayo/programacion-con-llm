@@ -88,3 +88,13 @@ def generar_caso_de_uso_detectar_anomalias_mahalanobis(seed=None):
     output_data = (etiquetas, distancias)
 
     return input_data, output_data
+
+if __name__ == "__main__":
+    
+    input_data, expected_output = generar_caso_de_uso_detectar_anomalias_mahalanobis()
+    
+    print("Input:\n")
+    print(input_data)
+
+    print("\nOutput:\n")
+    print(expected_output)
