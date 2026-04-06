@@ -95,3 +95,13 @@ def generar_caso_de_uso_analizar_series_por_grupo(seed=None):
     output_data = df
 
     return input_data, output_data
+
+if __name__ == "__main__":
+    
+    input_data, expected_output = generar_caso_de_uso_analizar_series_por_grupo()
+    
+    print("Input:\n")
+    print(input_data)
+
+    print("\nOutput:\n")
+    print(expected_output)
