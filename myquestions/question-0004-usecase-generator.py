@@ -76,7 +76,6 @@ def generar_caso_de_uso_reducir_dimensionalidad_incremental(seed=None):
         modelo.partial_fit(batch)
         total_samples_fit += len(batch)
 
-    # ✔ Aserción fuerte (ahora sí correcta)
     assert total_samples_fit == n_filas
 
     # Transformación completa
@@ -85,3 +84,13 @@ def generar_caso_de_uso_reducir_dimensionalidad_incremental(seed=None):
     output_data = X_transformado
 
     return input_data, output_data
+
+if __name__ == "__main__":
+    
+    input_data, expected_output = generar_caso_de_uso_reducir_dimensionalidad_incremental()
+    
+    print("Input:\n")
+    print(input_data)
+
+    print("\nOutput:\n")
+    print(expected_output)
