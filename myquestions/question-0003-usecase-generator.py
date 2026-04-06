@@ -99,3 +99,13 @@ def generar_caso_de_uso_alinear_eventos_con_referencias(seed=None):
     output_data = resultado
 
     return input_data, output_data
+
+if __name__ == "__main__":
+    
+    input_data, expected_output = generar_caso_de_uso_alinear_eventos_con_referencias()
+    
+    print("Input:\n")
+    print(input_data)
+
+    print("\nOutput:\n")
+    print(expected_output)
