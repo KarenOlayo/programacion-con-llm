@@ -6,12 +6,15 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.inspection import permutation_importance
 
 
-def evaluar_importancia_temporal(df: pd.DataFrame, target_col: str, fecha_col: str) -> pd.DataFrame:
+def evaluar_importancia_temporal(df: pd.DataFrame, target_col: str, fecha_col: str, **kwargs) -> pd.DataFrame:
+    
     """
     Calcula la importancia de características por permutación usando
     agrupación temporal por año. Usa los dos primeros años como train
     y el último como evaluación.
+    Acepta **kwargs para ignorar parámetros extra del generador (descripcion, instrucciones).
     """
+    
     columnas_vacias = ["feature", "importancia_media", "importancia_std"]
 
     # 1. Convertir fecha_col a datetime y extraer año
