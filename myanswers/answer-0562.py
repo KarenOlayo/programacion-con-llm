@@ -5,47 +5,36 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
 from sklearn.inspection import permutation_importance
 
-
 def evaluar_importancia_temporal(df=None, target_col=None, fecha_col=None, descripcion=None, instrucciones=None, **kwargs) -> pd.DataFrame:
     
     """
     Calcula la importancia de características por permutación usando
     agrupación temporal por año. Usa los dos primeros años como train
     y el último como evaluación.
-
-    Acepta descripcion e instrucciones (parámetros del generador de casos
-    de uso del compañero) sin usarlos.
     """
     
     columnas_vacias = ["feature", "importancia_media", "importancia_std"]
 
-    # Si no se reciben datos reales, devolver DataFrame vacío
     if df is None or target_col is None or fecha_col is None:
         return pd.DataFrame(columns=columnas_vacias)
 
-    # 1. Convertir fecha_col a datetime y extraer año
     df = df.copy()
     df[fecha_col] = pd.to_datetime(df[fecha_col])
     df["_anio"] = df[fecha_col].dt.year
-
-    # 2. Ordenar años cronológicamente
     anios = sorted(df["_anio"].unique())
 
-    # 3. Validar que haya al menos 3 años únicos
     if len(anios) < 3:
         return pd.DataFrame(columns=columnas_vacias)
 
     anios_train = anios[:2]
     anio_test   = anios[-1]
 
-    # 4. Separar features numéricas (excluir fecha_col y target_col)
     feature_cols = [
         c for c in df.columns
         if c not in [fecha_col, target_col, "_anio"]
         and pd.api.types.is_numeric_dtype(df[c])
     ]
 
-    # 5. Splits temporales
     mask_train = df["_anio"].isin(anios_train)
     mask_test  = df["_anio"] == anio_test
 
@@ -54,27 +43,22 @@ def evaluar_importancia_temporal(df=None, target_col=None, fecha_col=None, descr
     X_test  = df.loc[mask_test,  feature_cols]
     y_test  = df.loc[mask_test,  target_col]
 
-    # 6. Imputación (fit solo en train)
     imputer = SimpleImputer(strategy='median')
     X_train_imp = imputer.fit_transform(X_train)
     X_test_imp  = imputer.transform(X_test)
 
-    # 7. Escalado (fit solo en train)
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train_imp)
     X_test_scaled  = scaler.transform(X_test_imp)
 
-    # 8. Entrenar RandomForestRegressor
     modelo = RandomForestRegressor(n_estimators=100, random_state=42)
     modelo.fit(X_train_scaled, y_train)
 
-    # 9. Permutation importance sobre evaluación
     result = permutation_importance(
         modelo, X_test_scaled, y_test,
         n_repeats=10, random_state=42
     )
 
-    # 10. Construir DataFrame resultado
     resultado = pd.DataFrame({
         "feature":           feature_cols,
         "importancia_media": result.importances_mean,
