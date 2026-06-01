@@ -26,7 +26,7 @@ La solución correcta es que el archivo generador tenga una única función
 con toda la lógica embebida dentro de
 generar_caso_de_uso_evaluar_importancia_temporal, sin funciones auxiliares
 externas. Se preparó y verificó esa versión corregida, obteniendo
-"DataFrames idénticos: True" al comparar con mi answer-0562.py. Sin
+DataFrames idénticos al comparar con mi answer-0562.py. Sin
 embargo, la compañera no alcanzó a subir esta versión antes del cierre.
 
 Mi solución answer-0562.py implementa correctamente la lógica descrita
