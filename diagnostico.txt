@@ -1,0 +1,30 @@
+answer-0562.py:
+
+El generador de casos de uso original de la pregunta 0562 no seguía el
+formato estándar del ejercicio. En su versión original devolvía:
+  - enunciado = {"descripcion": ..., "instrucciones": ...}  como input_dict
+  - datos = (df, "target", "fecha")  como output_esperado
+Esto causaba que el validador llamara la función con argumentos incorrectos
+(descripcion e instrucciones en lugar de df, target_col y fecha_col).
+
+Se compartió con la compañera que desarrolló el generador de casos de uso
+la función solución evaluar_importancia_temporal
+para que la incluyera en su generador como función auxiliar y la usara para
+calcular el output esperado. Sin embargo, esto introdujo un nuevo problema:
+el validador sí ejecuta el archivo completo con exec() y luego recoge
+todas las funciones definidas con obj.__module__ == 'usecase_module' , llamando a la primera que encuentra
+(gen_funcs[0]()). Como el archivo quedó con dos funciones definidas
+(evaluar_importancia_temporal y generar_caso_de_uso_evaluar_importancia_temporal),
+el validador llama a evaluar_importancia_temporal (la primer función del archivo del generador de casos de uso)
+sin argumentos, causando el error: "evaluar_importancia_temporal() missing 3 required positional arguments: df, target_col, fecha_col".
+
+La solución correcta es que el archivo generador tenga una única función
+con toda la lógica embebida dentro de
+generar_caso_de_uso_evaluar_importancia_temporal, sin funciones auxiliares
+externas. Se preparó y verificó esa versión corregida, obteniendo
+"DataFrames idénticos: True" al comparar con mi answer-0562.py. Sin
+embargo, la compañera no alcanzó a subir esta versión antes del cierre.
+
+Mi solución answer-0562.py implementa correctamente la lógica descrita
+en el enunciado y produce resultados idénticos al generador cuando se
+llama con los argumentos correctos (df, target_col, fecha_col), lo cual verifiqué descargando y comparando ambos archivos directamente desde GitHub.
