@@ -4,14 +4,18 @@ El generador de casos de uso original de la pregunta 0562 no seguía el
 formato estándar del ejercicio. En su versión original devolvía:
   - enunciado = {"descripcion": ..., "instrucciones": ...}  como input_dict
   - datos = (df, "target", "fecha")  como output_esperado
-Esto causaba que el validador llamara la función con argumentos incorrectos
-(descripcion e instrucciones en lugar de df, target_col y fecha_col).
+Esto causaba dos problemas: primero, el validador llamaba la función con
+argumentos incorrectos (descripcion e instrucciones en lugar de df,
+target_col y fecha_col); segundo, el output esperado era una tupla
+(df, "target", "fecha") en lugar del DataFrame de importancias que la
+función debería retornar, por lo que la comparación entre el output
+esperado y el resultado de la función nunca podría ser correcta.
 
 Se compartió con la compañera que desarrolló el generador de casos de uso
 la función solución evaluar_importancia_temporal
 para que la incluyera en su generador como función auxiliar y la usara para
 calcular el output esperado. Sin embargo, esto introdujo un nuevo problema:
-el validador sí ejecuta el archivo completo con exec() y luego recoge
+el validador ejecuta el archivo completo con exec() y luego recoge
 todas las funciones definidas con obj.__module__ == 'usecase_module' , llamando a la primera que encuentra
 (gen_funcs[0]()). Como el archivo quedó con dos funciones definidas
 (evaluar_importancia_temporal y generar_caso_de_uso_evaluar_importancia_temporal),
