@@ -7,7 +7,7 @@ formato estándar del ejercicio. En su versión original devolvía:
 Esto causaba dos problemas: primero, el validador llamaba la función con
 argumentos incorrectos (descripcion e instrucciones en lugar de df,
 target_col y fecha_col); segundo, el output esperado era una tupla
-(df, "target", "fecha") en lugar del DataFrame de importancias que la
+(df, "target", "fecha") en lugar del DataFrame con columnas ["feature", "importancia_media", "importancia_std"] que la
 función debería retornar, por lo que la comparación entre el output
 esperado y el resultado de la función nunca podría ser correcta.
 
